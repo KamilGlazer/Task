@@ -13,9 +13,8 @@ import com.kamilglazer.task.repository.KeywordRepository;
 import com.kamilglazer.task.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.security.Key;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +35,6 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public CampaignDto create(CampaignDto campaignDto) {
         EmeraldAccount account = emeraldAccountRepository.findById(campaignDto.getEmeraldAccountId()).orElseThrow(() -> new EmeraldAccountException("Emerald Account not found"));
-
         BigDecimal campaignFund = campaignDto.getCampaignFund();
 
         if(account.getBalance().compareTo(campaignFund) < 0) {
@@ -46,9 +44,8 @@ public class CampaignServiceImpl implements CampaignService {
         account.setBalance(account.getBalance().subtract(campaignFund));
         emeraldAccountRepository.save(account);
 
-        List<Keyword> keywords = keywordRepository.findByWordIn(campaignDto.getKeywords());
-
-        Campaign campaign = CampaignMapper.toEntity(campaignDto,account,keywords);
+        List<Keyword> allKeywords = getOrCreateKeywords(campaignDto.getKeywords());
+        Campaign campaign = CampaignMapper.toEntity(campaignDto,account,allKeywords);
         Campaign campaignSaved = campaignRepository.save(campaign);
         return CampaignMapper.toDto(campaignSaved);
     }
@@ -81,14 +78,14 @@ public class CampaignServiceImpl implements CampaignService {
         }
         emeraldAccountRepository.save(account);
 
-        List<Keyword> keywords = keywordRepository.findByWordIn(campaignDto.getKeywords());
+        List<Keyword> allKeywords = getOrCreateKeywords(campaignDto.getKeywords());
 
         campaign.setName(campaignDto.getName());
         campaign.setCampaignFund(campaignDto.getCampaignFund());
         campaign.setCampaignStatus(campaignDto.getCampaignStatus());
         campaign.setTown(campaignDto.getTown());
         campaign.setBidAmount(campaignDto.getBidAmount());
-        campaign.setKeywords(keywords);
+        campaign.setKeywords(allKeywords);
         campaign.setRadius(campaignDto.getRadius());
         Campaign updatedCampaign = campaignRepository.save(campaign);
         return CampaignMapper.toDto(updatedCampaign);
@@ -99,4 +96,24 @@ public class CampaignServiceImpl implements CampaignService {
         List<Campaign> campaigns = campaignRepository.findAll();
         return campaigns.stream().map(CampaignMapper::toDto).collect(Collectors.toList());
     }
+
+
+    private List<Keyword> getOrCreateKeywords(List<String> keywordWords) {
+        List<Keyword> existingKeywords = keywordRepository.findByWordIn(keywordWords);
+        List<String> existingKeywordWords = existingKeywords.stream()
+                .map(Keyword::getWord)
+                .toList();
+
+        List<Keyword> newKeywords = keywordWords.stream()
+                .filter(word -> !existingKeywordWords.contains(word))
+                .map(word -> Keyword.builder().word(word).build())
+                .toList();
+
+        keywordRepository.saveAll(newKeywords);
+        List<Keyword> allKeywords = new ArrayList<>(existingKeywords);
+        allKeywords.addAll(newKeywords);
+        return allKeywords;
+    }
+
+
 }

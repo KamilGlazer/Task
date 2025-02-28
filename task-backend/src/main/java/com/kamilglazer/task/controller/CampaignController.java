@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/campaign")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CampaignController {
 
     private final CampaignService campaignService;

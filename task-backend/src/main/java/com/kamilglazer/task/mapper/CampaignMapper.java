@@ -12,6 +12,7 @@ public class CampaignMapper {
 
     public static CampaignDto toDto(Campaign campaign) {
         return CampaignDto.builder()
+                .id(campaign.getId())
                 .name(campaign.getName())
                 .keywords(campaign.getKeywords().stream()
                         .map(Keyword::getWord)
@@ -21,6 +22,7 @@ public class CampaignMapper {
                 .campaignStatus(campaign.getCampaignStatus())
                 .town(campaign.getTown())
                 .radius(campaign.getRadius())
+                .emeraldAccountId(campaign.getEmeraldAccount().getId())
                 .build();
     }
 

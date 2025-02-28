@@ -1,7 +1,6 @@
 package com.kamilglazer.task.dto;
 
 import com.kamilglazer.task.domain.CAMPAIGN_STATUS;
-import com.kamilglazer.task.entity.Keyword;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class CampaignDto {
+    private Long id;
     private String name;
     private List<String> keywords;
     private BigDecimal bidAmount;
