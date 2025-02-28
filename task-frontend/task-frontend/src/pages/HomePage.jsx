@@ -24,7 +24,7 @@ const HomePage = () => {
             <div className="flex justify-center mb-6">
             <Link 
                 to="/campaign/add" 
-                className="flex items-center px-6 py-3 rounded-lg shadow-lg border-2 border-emerald-600 bg-gradient-to-r from-emerald-500 to-emerald-600 font-semibold text-white
+                className="flex items-center px-6 py-3 rounded-lg shadow-lg border-2 border-emerald-500 bg-emerald-500 font-semibold text-white
                         hover:bg-gradient-to-r hover:from-emerald-500 hover:to-emerald-700 hover:text-white 
                         transition-all duration-300">
                 <FaPlus className="mr-2 text-lg" />

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getAccount } from "../services/accountService";
+import { useLocation } from "react-router-dom";
 import { FaUser} from 'react-icons/fa'
 
 const Navbar = () => {
     const [account,setAccount] = useState({ownerName:"",balance:0});
+    const location = useLocation();
 
     useEffect(() => {
         const fetchAccount = async () => {
@@ -16,7 +18,7 @@ const Navbar = () => {
             }
         }
         fetchAccount();
-    },[]);
+    },[location]);
 
     return (
         <nav className="flex justify-between items-center p-4 bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-md">
@@ -26,8 +28,9 @@ const Navbar = () => {
                     <p className="font-semibold">{account.ownerName || "Unknown User"}</p>
                 </div>
             </div>
-            <div className="text-white font-semibold">
-                <p>Balance: {account.balance?.toFixed(2)} USD</p>
+            <div className="flex gap-1 text-white">
+                <p>Balance: </p>
+                <p className="font-semibold"> {account.balance?.toFixed(2)} USD</p>
             </div>
         </nav>
     );
