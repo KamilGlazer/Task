@@ -8,6 +8,7 @@
 <pre><code>docker-compose up --build
 </code></pre>
 
+3. Open your browser and go to http://localhost:3000 to access the frontend of the application.
 
 #### Database credentials
 <hr>
