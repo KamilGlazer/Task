@@ -21,18 +21,16 @@ const Navbar = () => {
     },[location]);
 
     return (
-        <nav className="flex justify-between items-center p-4 bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-md">
-            <div className="flex items-center text-white">
-                <FaUser className="mr-2 text-xl" /> 
-                <div className="text-right">
-                    <p className="font-semibold">{account.ownerName || "Unknown User"}</p>
+        <div className="fixed top-4 right-8 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white 
+                        rounded-full shadow-lg p-2 flex flex-col items-center gap-2 w-40 hover:scale-105 hover: duration-800">
+            <div className="flex items-center">
+                <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full">
+                    <FaUser className="text-emerald-600 text-xl" />
                 </div>
+                <p className="font-semibold">{account.ownerName || "Unknown User"}</p>
             </div>
-            <div className="flex gap-1 text-white">
-                <p>Balance: </p>
-                <p className="font-semibold"> {account.balance?.toFixed(2)} USD</p>
-            </div>
-        </nav>
+            <p className="text-sm ">{account.balance?.toFixed(2)} USD</p>
+        </div>
     );
 }
 
