@@ -8,6 +8,7 @@ spring:
     username: root
     password: root
 
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
@@ -19,6 +20,8 @@ spring:
     console:
       enabled: true
       path: /h2-console
+      settings:
+        web-allow-others: true
 
   sql:
     init:
